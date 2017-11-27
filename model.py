@@ -8,9 +8,13 @@ class ChatBotModel(object):
     def __init__(self, forward_only, batch_size):
         """forward_only: if set, we do not construct the backward pass in the model.
         """
-        print('Initialize new model')
+        print('Initializing graph....')
         self.fw_only = forward_only
         self.batch_size = batch_size
+        if self.fw_only == True:
+            self.KEEP_PROB = 1.0
+        else:
+            self.KEEP_PROB = 0.5
     
     def _create_placeholders(self):
         # Feeds for inputs. It's a list of placeholders
@@ -41,11 +45,11 @@ class ChatBotModel(object):
         
         self.softmax_loss_function = sampled_loss
 
-        single_cell = tf.nn.rnn_cell.LSTMCell(config.HIDDEN_SIZE)
+        single_cell = tf.nn.rnn_cell.DropoutWrapper(tf.nn.rnn_cell.LSTMCell(config.HIDDEN_SIZE),output_keep_prob=self.KEEP_PROB)
         self.cell = tf.nn.rnn_cell.MultiRNNCell([single_cell] * config.NUM_LAYERS)
 
     def _create_loss(self):
-        print('Creating loss... \nIt might take a couple of minutes depending on how many buckets you have.')
+        print('Creating loss...')
         start = time.time()
         def _seq2seq_f(encoder_inputs, decoder_inputs, do_decode):
             return tf.contrib.legacy_seq2seq.embedding_attention_seq2seq(
@@ -84,12 +88,13 @@ class ChatBotModel(object):
         print('Time:', time.time() - start)
 
     def _creat_optimizer(self):
-        print('Create optimizer... \nIt might take a couple of minutes depending on how many buckets you have.')
+        print('Creating optimizer... ')
         with tf.variable_scope('training') as scope:
             self.global_step = tf.Variable(0, dtype=tf.int32, trainable=False, name='global_step')
 
             if not self.fw_only:
                 self.optimizer = tf.train.AdamOptimizer(config.LR)
+                #self.optimizer = tf.train.GradientDescentOptimizer(config.LR)
                 trainables = tf.trainable_variables()
                 self.gradient_norms = []
                 self.train_ops = []

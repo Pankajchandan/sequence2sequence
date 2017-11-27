@@ -60,7 +60,7 @@ def _construct_response(output_logits, inv_dec_vocab):
     # Print out sentence corresponding to outputs.
     response = " ".join([tf.compat.as_str(inv_dec_vocab[output]) for output in outputs])
     if len(outputs) == 0:
-        return "i dont have a response for this reason(first output generated was an EOS)"
+        return "i dont have a response as the first output generated was an EOS)"
     else:
         return response
 
