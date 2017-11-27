@@ -41,7 +41,7 @@ class ChatBotModel(object):
         
         self.softmax_loss_function = sampled_loss
 
-        single_cell = tf.nn.rnn_cell.GRUCell(config.HIDDEN_SIZE)
+        single_cell = tf.nn.rnn_cell.LSTMCell(config.HIDDEN_SIZE)
         self.cell = tf.nn.rnn_cell.MultiRNNCell([single_cell] * config.NUM_LAYERS)
 
     def _create_loss(self):
