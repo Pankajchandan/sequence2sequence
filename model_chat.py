@@ -1,9 +1,3 @@
-
-# coding: utf-8
-
-# In[60]:
-
-
 import re
 import os
 from model import ChatBotModel
@@ -12,9 +6,6 @@ import data
 import config
 from chatbot import _check_restore_parameters, _find_right_bucket, run_step
 import numpy as np
-
-
-# In[2]:
 
 
 _, enc_vocab = data.load_vocab(os.path.join(config.PROCESSED_PATH, 'vocab.enc'))
@@ -32,15 +23,10 @@ _check_restore_parameters(sess, saver)
 max_length = config.BUCKETS[-1][0]
 
 
-# In[6]:
-
-
 # do sentence preprocessing
 def sentence2id(vocab, line):
     return [vocab.get(token, vocab[b'<unk>']) for token in basic_tokenizer(line)]
 
-
-# In[83]:
 
 
 def basic_tokenizer(line, normalize_digits=True):
@@ -79,7 +65,6 @@ def _construct_response(output_logits, inv_dec_vocab):
         return response
 
 
-# In[88]:
 
 
 def talk(text):

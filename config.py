@@ -1,20 +1,3 @@
-""" A neural chatbot using sequence to sequence model with
-attentional decoder. 
-
-This is based on Google Translate Tensorflow model 
-https://github.com/tensorflow/models/blob/master/tutorials/rnn/translate/
-
-Sequence to sequence model by Cho et al.(2014)
-
-Created by Chip Huyen as the starter code for assignment 3,
-class CS 20SI: "TensorFlow for Deep Learning Research"
-cs20si.stanford.edu
-
-This file contains the hyperparameters for the model.
-
-See readme.md for instruction on how to run the starter code.
-"""
-
 # parameters for processing the dataset
 DATA_PATH = 'data'
 CONVO_FILE = 'movie_conversations.txt'
@@ -51,8 +34,9 @@ These buckets size seem to work the best
 BUCKETS = [(16, 19)]
 
 NUM_LAYERS = 3
-HIDDEN_SIZE = 256
-BATCH_SIZE = 64
+HIDDEN_SIZE = 512
+EMBED_SIZE = 1024
+BATCH_SIZE = 512
 
 LR = 0.5
 MAX_GRAD_NORM = 5.0

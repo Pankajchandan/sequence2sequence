@@ -1,26 +1,7 @@
-""" A neural chatbot using sequence to sequence model with
-attentional decoder. 
-
-This is based on Google Translate Tensorflow model 
-https://github.com/tensorflow/models/blob/master/tutorials/rnn/translate/
-
-Sequence to sequence model by Cho et al.(2014)
-
-Created by Chip Huyen as the starter code for assignment 3,
-class CS 20SI: "TensorFlow for Deep Learning Research"
-cs20si.stanford.edu
-
-This file contains the code to build the model
-
-See readme.md for instruction on how to run the starter code.
-"""
 from __future__ import print_function
-
 import time
-
 import numpy as np
 import tensorflow as tf
-
 import config
 
 class ChatBotModel(object):
@@ -71,7 +52,8 @@ class ChatBotModel(object):
                     encoder_inputs, decoder_inputs, self.cell,
                     num_encoder_symbols=config.ENC_VOCAB,
                     num_decoder_symbols=config.DEC_VOCAB,
-                    embedding_size=config.HIDDEN_SIZE,
+                    #embedding_size=config.HIDDEN_SIZE,
+                    embedding_size=config.EMBED_SIZE,
                     output_projection=self.output_projection,
                     feed_previous=do_decode)
 
@@ -107,7 +89,7 @@ class ChatBotModel(object):
             self.global_step = tf.Variable(0, dtype=tf.int32, trainable=False, name='global_step')
 
             if not self.fw_only:
-                self.optimizer = tf.train.GradientDescentOptimizer(config.LR)
+                self.optimizer = tf.train.AdamOptimizer(config.LR)
                 trainables = tf.trainable_variables()
                 self.gradient_norms = []
                 self.train_ops = []
